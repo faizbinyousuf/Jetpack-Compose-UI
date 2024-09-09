@@ -2,6 +2,7 @@ package com.example.carrentalapp.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,11 +19,15 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -30,6 +35,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
@@ -42,12 +48,134 @@ import com.example.carrentalapp.R
 
 @Composable
 fun HomeScreen(navController: NavController) {
-	Column {        //CarGridView()
-		ImageCarouselWithPager()
+	Column(
 		
+		  ) {
+		
+		CustomAppBar()
+		Text(
+			"Rent For",
+			fontSize = 20.sp,
+			fontWeight = FontWeight.Bold,
+			modifier = Modifier.padding(start = 15.dp, top = 20.dp))
+		CarGridView()
+		ImageCarouselWithPager()
+		CarSliders()
+	}
+}
+
+
+@Composable
+fun WalletComponent() {
+	Column(
+		verticalArrangement = Arrangement.Center,
+		horizontalAlignment = Alignment.Start,
+		
+		
+		) {
+		
+		Text(text = "My Wallet", fontWeight = FontWeight.SemiBold, fontSize = 10.sp)
+		Spacer(modifier = Modifier.height(5.dp))
+		
+		
+		Row(
+			modifier = Modifier
+				
+				.padding(0.dp)
+				
+				.border(
+					width = 1.dp, color = Color.LightGray, shape = RoundedCornerShape(6.dp)
+				       )
+				//			.padding(8.dp)
+				.height(25.dp)
+				.width(100.dp),
+			verticalAlignment = Alignment.CenterVertically
+		   ) {	   // Icon Box with Rounded Background
+			Box(
+				modifier = Modifier
+					.size(25.dp)
+					.background(Color(0xFFF5C06A), shape = RoundedCornerShape(5.dp)),
+				contentAlignment = Alignment.Center
+			   ) {
+				Icon(
+					imageVector = Icons.Filled.Email, // Your wallet icon resource
+					contentDescription = "Wallet Icon",
+					tint = Color.White,
+					modifier = Modifier.size(16.dp)
+				    )
+			}
+			
+			Spacer(modifier = Modifier.width(12.dp)) // Spacer for spacing between icon and text
+			
+			// Text: $1000
+			Text(
+				text = "$1000", color = Color.Black, fontSize = 15.sp, fontWeight = FontWeight.Bold
+			    )
+		}
+	}
+}
+
+@Composable
+fun CustomAppBar() {
+	Row(
+		modifier = Modifier.fillMaxWidth()
+			.padding(horizontal = 15.dp),
+		verticalAlignment = Alignment.CenterVertically,
+	
+	   ) {
+		Box(
+			modifier = Modifier
+				.background(
+					color = Color.LightGray, shape = CircleShape
+				           )
+				.size(40.dp),
+			contentAlignment = Alignment.Center
+		   ) {
+			Icon(imageVector = Icons.Filled.Person, contentDescription = null)
+			
+		}
+		Spacer(modifier = Modifier.width(8.dp))
+		Column {
+			Text("Hello Faiz", fontWeight = FontWeight.Bold, fontSize = 17.sp)
+			Text(text = "Welcome Back", fontWeight = FontWeight.SemiBold, fontSize = 12.sp)
+		}
+		
+		Spacer(modifier = Modifier.weight(1f))
+		
+		WalletComponent()
 		
 	}
 }
+
+@Composable
+fun CarSliders() {
+	val carList = listOf(
+		R.drawable.slider_1,
+		R.drawable.slider_2,
+		R.drawable.slider_3,
+		R.drawable.slider_1,
+		R.drawable.slider_2,
+		R.drawable.slider_3
+	                    )
+	LazyRow(modifier = Modifier.padding(11.dp)) {
+		items(carList) { it ->
+			var painter = painterResource(id = it)
+			Image(
+				painter = painter,
+				contentDescription = "Carousel Image",
+				contentScale = ContentScale.Crop,
+				modifier = Modifier
+					.height(200.dp)
+					.padding(10.dp)
+					.background(shape = RoundedCornerShape(10.dp), color = Color.White)
+					.clip(RoundedCornerShape(12.dp))
+			     
+			     
+			     )
+		}
+	}
+}
+
 
 @Composable
 fun CarGridView() {
@@ -59,6 +187,7 @@ fun CarGridView() {
 		horizontalArrangement = Arrangement.spacedBy(16.dp), // space between columns
 		contentPadding = PaddingValues(16.dp) // padding around the grid
 	                ) {
+		
 		items(gridItems) { item ->
 			GridItemViewNew(item)
 		}
@@ -81,6 +210,7 @@ fun ImageCarouselWithPager() {
 		horizontalAlignment = Alignment.CenterHorizontally,
 		
 		) {
+		
 		
 		HorizontalPager(
 			pageSpacing = 10.dp,
